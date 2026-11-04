@@ -1,0 +1,777 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>연희 카레 팝업 초대장</title>
+<meta name="description" content="연희동에서 열리는 카레 팝업에 초대합니다." />
+<meta property="og:title" content="연희 카레 팝업에 초대합니다 🍛" />
+<meta property="og:description" content="따뜻한 카레 한 그릇 하러 연희동으로 놀러 오세요." />
+<meta name="theme-color" content="#f3e6cf" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #f6ecd9;
+    --paper-2: #efe0c4;
+    --ink: #3a2516;
+    --ink-soft: #6e5340;
+    --turmeric: #e3a21a;
+    --turmeric-deep: #c97d0c;
+    --chili: #b8401f;
+    --leaf: #5d7a3a;
+    --card: #fffaf0;
+    --line: rgba(58, 37, 22, 0.15);
+    --shadow: 0 10px 30px rgba(80, 45, 10, 0.15);
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(227,162,26,0.10), transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(184,64,31,0.07), transparent 45%);
+    color: var(--ink);
+    font-family: "Noto Sans KR", system-ui, sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  body.locked { overflow: hidden; height: 100vh; }
+  .serif { font-family: "Gowun Batang", serif; }
+  .wrap { max-width: 440px; margin: 0 auto; padding: 0 20px 60px; }
+
+  /* ---------- Envelope intro ---------- */
+  #intro {
+    position: fixed; inset: 0; z-index: 50;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: var(--paper);
+    transition: opacity .8s ease, visibility .8s;
+  }
+  #intro.gone { opacity: 0; visibility: hidden; }
+  .envelope {
+    position: relative; width: 280px; height: 190px; cursor: pointer;
+    perspective: 900px;
+    animation: bob 2.6s ease-in-out infinite;
+  }
+  @keyframes bob { 50% { transform: translateY(-8px); } }
+  .env-back {
+    position: absolute; inset: 0; background: #d98f1b; border-radius: 8px;
+    box-shadow: var(--shadow);
+  }
+  .env-letter {
+    position: absolute; left: 14px; right: 14px; top: 14px; height: 160px;
+    background: var(--card); border-radius: 6px; padding: 18px 16px;
+    text-align: center; transition: transform .9s cubic-bezier(.2,.8,.2,1) .35s;
+    font-family: "Gowun Batang", serif; color: var(--ink);
+  }
+  .env-letter b { display: block; font-size: 20px; margin-top: 18px; }
+  .env-front {
+    position: absolute; inset: 0; border-radius: 8px; pointer-events: none;
+    background:
+      linear-gradient(to top right, #eaa52c 50%, transparent 50.5%) left bottom / 50.5% 100% no-repeat,
+      linear-gradient(to top left, #e39c22 50%, transparent 50.5%) right bottom / 50.5% 100% no-repeat;
+  }
+  .env-flap {
+    position: absolute; left: 0; right: 0; top: 0; height: 110px;
+    transform-origin: top; transition: transform .6s ease, z-index 0s .3s;
+    z-index: 3;
+  }
+  .env-flap::before {
+    content: ""; position: absolute; inset: 0;
+    background: #f0b23d;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    border-radius: 8px 8px 0 0;
+  }
+  .seal {
+    position: absolute; left: 50%; top: 88px; transform: translate(-50%, -50%);
+    width: 54px; height: 54px; border-radius: 50%;
+    background: var(--chili); color: #fff3df; z-index: 4;
+    display: grid; place-items: center; font-size: 24px;
+    box-shadow: 0 3px 8px rgba(0,0,0,.25), inset 0 0 0 3px rgba(255,255,255,.18);
+    transition: opacity .3s, transform .3s;
+  }
+  .envelope.open { animation: none; }
+  .envelope.open .seal { opacity: 0; transform: translate(-50%, -50%) scale(1.6); }
+  .envelope.open .env-flap { transform: rotateX(180deg); z-index: 0; }
+  .envelope.open .env-letter { transform: translateY(-110px); }
+  .intro-hint {
+    margin-top: 40px; font-size: 14px; color: var(--ink-soft); letter-spacing: .05em;
+    animation: blink 1.6s ease-in-out infinite;
+  }
+  @keyframes blink { 50% { opacity: .35; } }
+  .intro-to { font-family: "Gowun Batang", serif; font-size: 15px; color: var(--ink-soft); margin-bottom: 28px; }
+
+  /* ---------- Hero ---------- */
+  .hero { text-align: center; padding: 56px 0 24px; }
+  .eyebrow { font-size: 12px; letter-spacing: .3em; color: var(--turmeric-deep); font-weight: 700; }
+  .hero h1 { font-family: "Gowun Batang", serif; font-size: 34px; line-height: 1.3; margin: 12px 0 8px; }
+  .hero h1 em { font-style: normal; color: var(--chili); }
+  .hero p { color: var(--ink-soft); margin: 0; font-size: 15px; }
+
+  .bowl-stage { position: relative; width: 220px; height: 200px; margin: 18px auto 4px; cursor: pointer; user-select: none; }
+  .bowl-stage svg { width: 100%; height: 100%; overflow: visible; }
+  .steam path { fill: none; stroke: rgba(110,83,64,.35); stroke-width: 4; stroke-linecap: round;
+    animation: steam 3s ease-in-out infinite; }
+  .steam path:nth-child(2) { animation-delay: .8s; }
+  .steam path:nth-child(3) { animation-delay: 1.6s; }
+  @keyframes steam {
+    0% { opacity: 0; transform: translateY(10px); }
+    40% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-22px); }
+  }
+  #curryTop { transition: fill .5s ease; }
+  .bowl-stage.stir #swirl { animation: spin .9s ease-in-out; transform-origin: 110px 112px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .stir-count { font-size: 12px; color: var(--ink-soft); text-align: center; min-height: 18px; }
+  .pop {
+    position: absolute; pointer-events: none; font-size: 20px;
+    animation: popUp 1s ease-out forwards;
+  }
+  @keyframes popUp {
+    from { opacity: 1; transform: translate(-50%, 0) scale(.6); }
+    to { opacity: 0; transform: translate(calc(-50% + var(--dx)), -90px) scale(1.2); }
+  }
+
+  /* ---------- Sections ---------- */
+  section.card {
+    background: var(--card); border-radius: 18px; padding: 24px 20px;
+    margin-top: 18px; box-shadow: 0 2px 0 var(--line), var(--shadow);
+    opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease;
+  }
+  section.card.in { opacity: 1; transform: none; }
+  .card h2 {
+    font-family: "Gowun Batang", serif; font-size: 20px; margin: 0 0 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card h2 small { font-family: "Noto Sans KR"; font-size: 11px; letter-spacing: .2em; color: var(--turmeric-deep); font-weight: 700; margin-left: auto; }
+  .letter { font-family: "Gowun Batang", serif; font-size: 16px; line-height: 1.9; white-space: pre-line; margin: 0; }
+  .sign { text-align: right; margin-top: 12px; font-family: "Gowun Batang", serif; color: var(--ink-soft); }
+
+  /* countdown */
+  .count { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center; }
+  .count div { background: var(--paper); border-radius: 12px; padding: 10px 0; }
+  .count b { display: block; font-size: 26px; font-family: "Gowun Batang", serif; color: var(--chili); line-height: 1.2; }
+  .count span { font-size: 11px; color: var(--ink-soft); }
+  .count-msg { text-align: center; margin: 12px 0 0; font-size: 14px; color: var(--ink-soft); }
+
+  /* info rows */
+  .info { list-style: none; padding: 0; margin: 0; }
+  .info li { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px dashed var(--line); }
+  .info li:last-child { border-bottom: 0; }
+  .info .k { flex: 0 0 52px; font-size: 13px; color: var(--turmeric-deep); font-weight: 700; padding-top: 1px; }
+  .info .v { flex: 1; font-size: 15px; }
+  .info .v small { display: block; color: var(--ink-soft); font-size: 13px; }
+
+  .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
+  .btn {
+    appearance: none; border: 1.5px solid var(--ink); background: transparent; color: var(--ink);
+    border-radius: 999px; padding: 11px 14px; font: 500 14px "Noto Sans KR", sans-serif;
+    cursor: pointer; text-decoration: none; text-align: center;
+    transition: transform .15s, background .2s, color .2s;
+  }
+  .btn:active { transform: scale(.96); }
+  .btn.solid { background: var(--ink); color: var(--paper); }
+  .btn.full { grid-column: 1 / -1; }
+  .btn.turmeric { background: var(--turmeric); border-color: var(--turmeric); color: var(--ink); font-weight: 700; }
+
+  /* menu flip cards */
+  .menu-hint { font-size: 13px; color: var(--ink-soft); margin: -6px 0 12px; }
+  .menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .dish { perspective: 800px; height: 168px; cursor: pointer; }
+  .dish-in { position: relative; width: 100%; height: 100%; transition: transform .6s cubic-bezier(.3,.9,.3,1); transform-style: preserve-3d; }
+  .dish.flip .dish-in { transform: rotateY(180deg); }
+  .face {
+    position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    border-radius: 14px; padding: 14px 12px; display: flex; flex-direction: column;
+  }
+  .front { background: var(--paper); align-items: center; justify-content: center; text-align: center; }
+  .front .emoji { font-size: 44px; line-height: 1; }
+  .front b { margin-top: 10px; font-family: "Gowun Batang", serif; font-size: 16px; }
+  .front .price { font-size: 12px; color: var(--ink-soft); }
+  .back { background: var(--ink); color: var(--paper); transform: rotateY(180deg); font-size: 13px; line-height: 1.6; justify-content: space-between; }
+  .back .tag { font-size: 11px; color: var(--turmeric); letter-spacing: .1em; }
+  .heat { letter-spacing: 2px; }
+  .like-btn {
+    align-self: flex-start; appearance: none; border: 1px solid rgba(246,236,217,.4); background: transparent; color: var(--paper);
+    border-radius: 999px; padding: 3px 10px; font-size: 12px; cursor: pointer; font-family: inherit;
+  }
+  .like-btn.on { background: var(--chili); border-color: var(--chili); }
+
+  /* spice meter */
+  .spice-face { text-align: center; font-size: 54px; line-height: 1; transition: transform .2s; }
+  .spice-label { text-align: center; font-family: "Gowun Batang", serif; font-size: 18px; margin: 8px 0 2px; }
+  .spice-desc { text-align: center; font-size: 13px; color: var(--ink-soft); min-height: 21px; margin: 0 0 16px; }
+  input[type=range] {
+    -webkit-appearance: none; appearance: none; width: 100%; height: 12px; border-radius: 999px;
+    background: linear-gradient(90deg, #f3d27a, var(--turmeric), #e0601f, var(--chili), #6e1a0c);
+    outline: none;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 30px; height: 30px; border-radius: 50%;
+    background: var(--card); border: 3px solid var(--ink); box-shadow: 0 2px 6px rgba(0,0,0,.2); cursor: grab;
+  }
+  input[type=range]::-moz-range-thumb {
+    width: 26px; height: 26px; border-radius: 50%; background: var(--card); border: 3px solid var(--ink); cursor: grab;
+  }
+  .scale { display: flex; justify-content: space-between; font-size: 11px; color: var(--ink-soft); margin-top: 6px; }
+  .shake { animation: shake .35s ease-in-out infinite; }
+  @keyframes shake { 25% { transform: rotate(-8deg); } 75% { transform: rotate(8deg); } }
+
+  /* RSVP */
+  .field { margin-bottom: 14px; }
+  .field label.t { display: block; font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+  .field input[type=text], .field textarea {
+    width: 100%; border: 1.5px solid var(--line); background: var(--paper); border-radius: 12px;
+    padding: 12px 14px; font: 15px "Noto Sans KR", sans-serif; color: var(--ink); outline: none;
+  }
+  .field input[type=text]:focus, .field textarea:focus { border-color: var(--turmeric); }
+  .field textarea { resize: none; height: 72px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip input { position: absolute; opacity: 0; pointer-events: none; }
+  .chip span {
+    display: inline-block; padding: 8px 14px; border-radius: 999px; border: 1.5px solid var(--line);
+    font-size: 14px; cursor: pointer; transition: all .2s; background: var(--paper);
+  }
+  .chip input:checked + span { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .stepper { display: inline-flex; align-items: center; border: 1.5px solid var(--line); border-radius: 999px; background: var(--paper); }
+  .stepper button { appearance: none; border: 0; background: none; width: 40px; height: 40px; font-size: 20px; cursor: pointer; color: var(--ink); }
+  .stepper output { min-width: 40px; text-align: center; font-weight: 700; }
+  .err { color: var(--chili); font-size: 13px; min-height: 20px; margin: -4px 0 8px; }
+
+  /* Ticket */
+  .ticket {
+    display: none; position: relative; background: var(--turmeric); color: var(--ink);
+    border-radius: 16px; padding: 22px 20px; overflow: hidden;
+    animation: ticketIn .6s cubic-bezier(.2,.9,.3,1.3);
+  }
+  .ticket.show { display: block; }
+  @keyframes ticketIn { from { transform: scale(.7) rotate(-6deg); opacity: 0; } }
+  .ticket::before, .ticket::after {
+    content: ""; position: absolute; top: 62%; width: 24px; height: 24px; border-radius: 50%; background: var(--card);
+  }
+  .ticket::before { left: -12px; } .ticket::after { right: -12px; }
+  .ticket .t-top { border-bottom: 2px dashed rgba(58,37,22,.35); padding-bottom: 14px; margin-bottom: 14px; }
+  .ticket .t-label { font-size: 11px; letter-spacing: .25em; font-weight: 700; }
+  .ticket .t-name { font-family: "Gowun Batang", serif; font-size: 26px; margin: 4px 0 0; }
+  .ticket dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; margin: 0; font-size: 14px; }
+  .ticket dt { font-weight: 700; }
+  .ticket dd { margin: 0; }
+  .ticket .t-no { position: absolute; right: 18px; top: 22px; font-family: monospace; font-size: 13px; opacity: .7; }
+  .ticket-actions { display: none; margin-top: 10px; }
+  .ticket-actions.show { display: grid; }
+
+  /* Guestbook */
+  .notes { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+  .note { background: var(--paper); border-radius: 12px; padding: 10px 14px; font-size: 14px; animation: ticketIn .4s ease; }
+  .note small { display: block; color: var(--ink-soft); font-size: 11px; }
+  .note-form { display: flex; gap: 8px; }
+  .note-form input { flex: 1; }
+
+  footer { text-align: center; padding: 36px 0 10px; color: var(--ink-soft); font-size: 13px; }
+  footer .serif { font-size: 18px; color: var(--ink); }
+
+  .toast {
+    position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom)); transform: translate(-50%, 30px);
+    background: var(--ink); color: var(--paper); padding: 10px 18px; border-radius: 999px; font-size: 14px;
+    opacity: 0; transition: all .3s; z-index: 60; pointer-events: none; white-space: nowrap;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  .confetti { position: fixed; top: -20px; z-index: 55; pointer-events: none; font-size: 22px; animation: fall linear forwards; }
+  @keyframes fall { to { transform: translateY(110vh) rotate(540deg); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body class="locked">
+
+<!-- ========== 봉투 인트로 ========== -->
+<div id="intro" role="button" aria-label="초대장 열기" tabindex="0">
+  <div class="intro-to" id="introTo">소중한 당신에게</div>
+  <div class="envelope" id="envelope">
+    <div class="env-back"></div>
+    <div class="env-letter"><span style="font-size:13px;color:var(--ink-soft)">INVITATION</span><b>카레 먹으러 와요 🍛</b></div>
+    <div class="env-front"></div>
+    <div class="env-flap"></div>
+    <div class="seal">🍛</div>
+  </div>
+  <div class="intro-hint">봉투를 눌러 열어보세요</div>
+</div>
+
+<main class="wrap">
+  <!-- ========== 히어로 ========== -->
+  <header class="hero">
+    <div class="eyebrow" id="heroEyebrow">YEONHUI CURRY POP-UP</div>
+    <h1 id="heroTitle">연희동 골목에서<br/><em>카레 한 그릇</em> 할래요?</h1>
+    <p id="heroSub"></p>
+
+    <div class="bowl-stage" id="bowl" aria-label="카레 저어보기">
+      <svg viewBox="0 0 220 200" aria-hidden="true">
+        <g class="steam" transform="translate(0 52)">
+          <path d="M80 60 q-10 -15 0 -30 q10 -15 0 -30" />
+          <path d="M110 55 q-10 -15 0 -30 q10 -15 0 -30" />
+          <path d="M140 60 q-10 -15 0 -30 q10 -15 0 -30" />
+        </g>
+        <ellipse cx="110" cy="112" rx="92" ry="22" fill="#fffaf0" />
+        <ellipse id="curryTop" cx="110" cy="112" rx="84" ry="17" fill="#e3a21a" />
+        <g id="swirl">
+          <path d="M70 112 q20 -10 40 0 t40 0" stroke="#c97d0c" stroke-width="3" fill="none" stroke-linecap="round" opacity=".8"/>
+          <circle cx="88" cy="108" r="7" fill="#f6ecd9" />
+          <circle cx="96" cy="114" r="6" fill="#f6ecd9" />
+          <circle cx="135" cy="110" r="5" fill="#d9692a" />
+          <circle cx="126" cy="116" r="4" fill="#5d7a3a" />
+          <circle cx="145" cy="115" r="3" fill="#5d7a3a" />
+        </g>
+        <path d="M18 112 q0 70 92 70 q92 0 92 -70" fill="#3a2516" />
+        <path d="M30 128 q10 40 80 44" stroke="rgba(255,255,255,.15)" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <ellipse cx="110" cy="186" rx="40" ry="6" fill="#3a2516" />
+      </svg>
+    </div>
+    <div class="stir-count" id="stirCount">카레를 톡톡 눌러 저어보세요</div>
+  </header>
+
+  <!-- ========== 초대의 글 ========== -->
+  <section class="card">
+    <h2>초대합니다 <small>LETTER</small></h2>
+    <p class="letter" id="letter"></p>
+    <div class="sign" id="sign"></div>
+  </section>
+
+  <!-- ========== 카운트다운 ========== -->
+  <section class="card">
+    <h2>팝업 오픈까지 <small>D-DAY</small></h2>
+    <div class="count" id="count">
+      <div><b id="cd-d">0</b><span>일</span></div>
+      <div><b id="cd-h">0</b><span>시간</span></div>
+      <div><b id="cd-m">0</b><span>분</span></div>
+      <div><b id="cd-s">0</b><span>초</span></div>
+    </div>
+    <p class="count-msg" id="countMsg"></p>
+  </section>
+
+  <!-- ========== 일시·장소 ========== -->
+  <section class="card">
+    <h2>언제, 어디서 <small>INFO</small></h2>
+    <ul class="info">
+      <li><span class="k">날짜</span><span class="v" id="infoDate"></span></li>
+      <li><span class="k">시간</span><span class="v" id="infoTime"></span></li>
+      <li><span class="k">장소</span><span class="v" id="infoPlace"></span></li>
+      <li><span class="k">안내</span><span class="v" id="infoNote"></span></li>
+    </ul>
+    <div class="btn-row">
+      <a class="btn solid" id="mapNaver" target="_blank" rel="noopener">네이버 지도</a>
+      <a class="btn solid" id="mapKakao" target="_blank" rel="noopener">카카오맵</a>
+      <button class="btn" id="copyAddr" type="button">주소 복사</button>
+      <button class="btn" id="addCal" type="button">캘린더 추가</button>
+    </div>
+  </section>
+
+  <!-- ========== 메뉴 ========== -->
+  <section class="card">
+    <h2>오늘의 메뉴 <small>MENU</small></h2>
+    <p class="menu-hint">카드를 눌러 뒤집어 보고, 먹고 싶은 메뉴에 ♥를 눌러주세요.</p>
+    <div class="menu" id="menu"></div>
+  </section>
+
+  <!-- ========== 맵기 선택 ========== -->
+  <section class="card">
+    <h2>나의 맵기 레벨 <small>SPICE</small></h2>
+    <div class="spice-face" id="spiceFace">😊</div>
+    <div class="spice-label" id="spiceLabel">순한맛</div>
+    <p class="spice-desc" id="spiceDesc"></p>
+    <input type="range" id="spice" min="0" max="4" step="1" value="1" aria-label="맵기 단계" />
+    <div class="scale"><span>순둥</span><span>보통</span><span>매콤</span><span>화끈</span><span>지옥</span></div>
+  </section>
+
+  <!-- ========== 참석 여부 ========== -->
+  <section class="card" id="rsvp">
+    <h2>참석 알려주기 <small>RSVP</small></h2>
+    <form id="rsvpForm" novalidate>
+      <div class="field">
+        <label class="t" for="rName">이름</label>
+        <input type="text" id="rName" maxlength="20" placeholder="이름을 알려주세요" autocomplete="name" />
+      </div>
+      <div class="field">
+        <span class="t" style="display:block;font-size:13px;font-weight:700;margin-bottom:6px">방문 예정일</span>
+        <div class="chips" id="dayChips"></div>
+      </div>
+      <div class="field">
+        <span class="t" style="display:block;font-size:13px;font-weight:700;margin-bottom:6px">함께 오는 인원 (본인 포함)</span>
+        <div class="stepper">
+          <button type="button" id="minus" aria-label="인원 줄이기">−</button>
+          <output id="people">1</output>
+          <button type="button" id="plus" aria-label="인원 늘리기">+</button>
+        </div>
+      </div>
+      <div class="field">
+        <label class="t" for="rMsg">한마디 (선택)</label>
+        <textarea id="rMsg" maxlength="80" placeholder="응원 한마디, 알러지 정보 등"></textarea>
+      </div>
+      <p class="err" id="rErr"></p>
+      <button class="btn turmeric full" type="submit" style="width:100%">참석할게요 🍛</button>
+    </form>
+
+    <div class="ticket" id="ticket">
+      <div class="t-no" id="tNo"></div>
+      <div class="t-top">
+        <div class="t-label">ADMIT ONE · 입장권</div>
+        <p class="t-name" id="tName"></p>
+      </div>
+      <dl>
+        <dt>방문일</dt><dd id="tDay"></dd>
+        <dt>인원</dt><dd id="tPeople"></dd>
+        <dt>맵기</dt><dd id="tSpice"></dd>
+        <dt>찜한 메뉴</dt><dd id="tLikes"></dd>
+      </dl>
+    </div>
+    <div class="btn-row ticket-actions" id="ticketActions">
+      <button class="btn" type="button" id="editRsvp">수정하기</button>
+      <button class="btn solid" type="button" id="sendHost">호스트에게 보내기</button>
+    </div>
+  </section>
+
+  <!-- ========== 응원 한마디 ========== -->
+  <section class="card">
+    <h2>응원 메모 <small>NOTES</small></h2>
+    <form class="note-form field" id="noteForm" style="margin:0">
+      <input type="text" id="noteInput" maxlength="40" placeholder="한 줄 응원을 남겨보세요" />
+      <button class="btn solid" type="submit">남기기</button>
+    </form>
+    <div class="notes" id="notes"></div>
+  </section>
+
+  <div class="btn-row" style="margin-top:22px">
+    <button class="btn turmeric full" id="shareBtn" type="button">친구에게 초대장 공유하기</button>
+  </div>
+
+  <footer>
+    <div class="serif" id="footTitle"></div>
+    <div id="footSub">따뜻한 한 그릇으로 만나요</div>
+  </footer>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   ✏️  여기만 수정하면 초대장 내용이 바뀝니다
+   ========================================================= */
+const CONFIG = {
+  title: "연희 카레 팝업",
+  host: "OOO 드림",
+  guestDefault: "소중한 당신에게",          // URL에 ?to=이름 을 붙이면 받는 사람 이름이 바뀝니다
+  subtitle: "단 이틀, 연희동에서 열리는 작은 카레 가게",
+  letter:
+`오랫동안 끓여 온 카레를
+드디어 여러분께 대접하려고 해요.
+
+연희동 작은 공간에서
+딱 이틀 동안만 문을 엽니다.
+
+바쁜 하루 중 잠깐, 따뜻한 카레 한 그릇
+같이 나눠 먹으면 좋겠어요.`,
+  // 팝업 날짜들 (YYYY-MM-DD). 첫 날짜 + openTime 기준으로 카운트다운합니다.
+  days: ["2026-11-21", "2026-11-22"],
+  openTime: "11:30",
+  closeTime: "20:00",
+  breakTime: "15:00 – 17:00 브레이크 타임",
+  placeName: "연희동 OO 공간",
+  address: "서울 서대문구 연희동 (상세 주소 입력)",
+  mapQuery: "서울 서대문구 연희동",       // 지도 검색어 (정확한 주소를 넣으면 좋아요)
+  note: "재료 소진 시 조기 마감될 수 있어요.\n반려동물 동반 가능 · 주차 공간 없음",
+  hostContact: "",                         // 예: "010-0000-0000" → '호스트에게 보내기'가 문자로 연결됩니다
+  menu: [
+    { emoji: "🍛", name: "연희 비프 카레", price: "12,000원", heat: 2, tag: "SIGNATURE",
+      desc: "양파를 3시간 볶아 낸 깊은 단맛의 소고기 카레." },
+    { emoji: "🥥", name: "코코넛 치킨 카레", price: "12,000원", heat: 1, tag: "MILD",
+      desc: "부드러운 코코넛 밀크와 허브 향의 순한 카레." },
+    { emoji: "🌶️", name: "키마 카레", price: "11,000원", heat: 3, tag: "SPICY",
+      desc: "다진 고기와 향신료를 바짝 볶은 드라이 카레. 반숙 계란 토핑." },
+    { emoji: "🥬", name: "제철 채소 카레", price: "11,000원", heat: 1, tag: "VEGAN",
+      desc: "가을 뿌리채소를 듬뿍 넣은 비건 카레." },
+    { emoji: "🍮", name: "짜이 푸딩", price: "4,000원", heat: 0, tag: "DESSERT",
+      desc: "카레 뒤에 딱 좋은, 시나몬 향 짜이 푸딩." },
+    { emoji: "🥤", name: "망고 라씨", price: "5,000원", heat: 0, tag: "DRINK",
+      desc: "매운맛을 달래 줄 진한 망고 요거트 음료." },
+  ],
+};
+/* ========================================================= */
+
+const $ = (s) => document.querySelector(s);
+const store = {
+  get(k, d) { try { const v = localStorage.getItem("curry:" + k); return v ? JSON.parse(v) : d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem("curry:" + k, JSON.stringify(v)); } catch {} },
+};
+const toast = (msg) => {
+  const t = $("#toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove("show"), 1800);
+};
+const WEEK = ["일", "월", "화", "수", "목", "금", "토"];
+const fmtDay = (iso) => { const d = new Date(iso + "T00:00:00"); return `${d.getMonth() + 1}월 ${d.getDate()}일 (${WEEK[d.getDay()]})`; };
+
+/* ---------- 내용 채우기 ---------- */
+const params = new URLSearchParams(location.search);
+const guest = params.get("to");
+$("#introTo").textContent = guest ? `${guest}님에게` : CONFIG.guestDefault;
+$("#heroSub").textContent = CONFIG.subtitle;
+$("#letter").textContent = (guest ? `${guest}님,\n\n` : "") + CONFIG.letter;
+$("#sign").textContent = CONFIG.host;
+$("#infoDate").innerHTML = CONFIG.days.map(fmtDay).join("<br/>");
+$("#infoTime").innerHTML = `${CONFIG.openTime} – ${CONFIG.closeTime}<small>${CONFIG.breakTime}</small>`;
+$("#infoPlace").innerHTML = "";
+$("#infoPlace").append(CONFIG.placeName);
+const addrSmall = document.createElement("small"); addrSmall.textContent = CONFIG.address; $("#infoPlace").append(addrSmall);
+$("#infoNote").innerHTML = CONFIG.note.split("\n").map((l) => `<small style="color:inherit;font-size:14px">${l}</small>`).join("");
+$("#mapNaver").href = "https://map.naver.com/p/search/" + encodeURIComponent(CONFIG.mapQuery);
+$("#mapKakao").href = "https://map.kakao.com/?q=" + encodeURIComponent(CONFIG.mapQuery);
+$("#footTitle").textContent = CONFIG.title;
+
+/* ---------- 봉투 열기 ---------- */
+const intro = $("#intro");
+function openEnvelope() {
+  if (intro.dataset.opened) return;
+  intro.dataset.opened = "1";
+  $("#envelope").classList.add("open");
+  if (navigator.vibrate) navigator.vibrate(30);
+  setTimeout(() => { intro.classList.add("gone"); document.body.classList.remove("locked"); confetti(14); }, 1500);
+}
+intro.addEventListener("click", openEnvelope);
+intro.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") openEnvelope(); });
+
+/* ---------- 스크롤 등장 ---------- */
+const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: 0.12 });
+document.querySelectorAll("section.card").forEach((s) => io.observe(s));
+
+/* ---------- 카레 저어보기 ---------- */
+const STIR_MSG = ["", "솔솔~ 향이 올라와요", "점점 진해지는 중…", "보글보글 🔥", "거의 다 됐어요!", "완벽한 카레 완성! 🎉 연희동에서 만나요"];
+let stirs = 0;
+$("#bowl").addEventListener("click", (e) => {
+  const b = $("#bowl");
+  b.classList.remove("stir"); void b.offsetWidth; b.classList.add("stir");
+  stirs++;
+  const lvl = Math.min(stirs, 5);
+  const colors = ["#e3a21a", "#dc9618", "#d38914", "#c97d0c", "#b86d0a", "#a35d08"];
+  $("#curryTop").setAttribute("fill", colors[lvl]);
+  $("#stirCount").textContent = stirs >= 5 ? STIR_MSG[5] : STIR_MSG[lvl];
+  const r = b.getBoundingClientRect();
+  const p = document.createElement("span");
+  p.className = "pop";
+  p.textContent = ["🌶️", "🧅", "🥕", "🧄", "✨", "🍛"][stirs % 6];
+  p.style.left = (e.clientX - r.left) + "px"; p.style.top = (e.clientY - r.top) + "px";
+  p.style.setProperty("--dx", (Math.random() * 60 - 30) + "px");
+  b.append(p); setTimeout(() => p.remove(), 1000);
+  if (stirs === 5) confetti(24);
+});
+
+/* ---------- 카운트다운 ---------- */
+const openAt = new Date(`${CONFIG.days[0]}T${CONFIG.openTime}:00+09:00`);
+const closeAt = new Date(`${CONFIG.days[CONFIG.days.length - 1]}T${CONFIG.closeTime}:00+09:00`);
+function tick() {
+  const now = new Date();
+  let diff = Math.max(0, openAt - now);
+  const d = Math.floor(diff / 864e5); diff -= d * 864e5;
+  const h = Math.floor(diff / 36e5); diff -= h * 36e5;
+  const m = Math.floor(diff / 6e4); diff -= m * 6e4;
+  const s = Math.floor(diff / 1e3);
+  $("#cd-d").textContent = d; $("#cd-h").textContent = h; $("#cd-m").textContent = m; $("#cd-s").textContent = s;
+  $("#countMsg").textContent =
+    now < openAt ? `${fmtDay(CONFIG.days[0])} ${CONFIG.openTime}에 문을 열어요` :
+    now < closeAt ? "지금 영업 중이에요! 어서 오세요 🍛" : "팝업이 끝났어요. 와 주셔서 고마워요 💛";
+}
+tick(); setInterval(tick, 1000);
+
+/* ---------- 주소 복사 / 캘린더 ---------- */
+$("#copyAddr").addEventListener("click", async () => {
+  try { await navigator.clipboard.writeText(CONFIG.address); }
+  catch { const ta = document.createElement("textarea"); ta.value = CONFIG.address; document.body.append(ta); ta.select(); document.execCommand("copy"); ta.remove(); }
+  toast("주소를 복사했어요");
+});
+$("#addCal").addEventListener("click", () => {
+  const z = (iso, t) => iso.replace(/-/g, "") + "T" + t.replace(":", "") + "00";
+  const events = CONFIG.days.map((day, i) => [
+    "BEGIN:VEVENT",
+    `UID:curry-popup-${day}-${i}@invite`,
+    `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, "").split(".")[0]}Z`,
+    `DTSTART;TZID=Asia/Seoul:${z(day, CONFIG.openTime)}`,
+    `DTEND;TZID=Asia/Seoul:${z(day, CONFIG.closeTime)}`,
+    `SUMMARY:${CONFIG.title} 🍛`,
+    `LOCATION:${CONFIG.placeName} ${CONFIG.address}`,
+    `DESCRIPTION:${CONFIG.subtitle}`,
+    "END:VEVENT",
+  ].join("\r\n"));
+  const ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//curry-popup//KO", ...events, "END:VCALENDAR"].join("\r\n");
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([ics], { type: "text/calendar;charset=utf-8" }));
+  a.download = "curry-popup.ics"; a.click();
+  toast("캘린더 파일을 받았어요");
+});
+
+/* ---------- 메뉴 카드 ---------- */
+let likes = store.get("likes", []);
+const menuEl = $("#menu");
+CONFIG.menu.forEach((m, i) => {
+  const el = document.createElement("div");
+  el.className = "dish";
+  el.innerHTML = `
+    <div class="dish-in">
+      <div class="face front"><div class="emoji">${m.emoji}</div><b>${m.name}</b><span class="price">${m.price}</span></div>
+      <div class="face back">
+        <div><div class="tag">${m.tag}</div><div>${m.desc}</div></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;width:100%">
+          <span class="heat">${m.heat ? "🌶️".repeat(m.heat) : "—"}</span>
+          <button type="button" class="like-btn" data-i="${i}">♥ 찜</button>
+        </div>
+      </div>
+    </div>`;
+  el.addEventListener("click", (e) => {
+    const lb = e.target.closest(".like-btn");
+    if (lb) {
+      e.stopPropagation();
+      likes = likes.includes(i) ? likes.filter((x) => x !== i) : [...likes, i];
+      store.set("likes", likes); syncLikes();
+      toast(likes.includes(i) ? `${m.name} 찜! ♥` : "찜을 취소했어요");
+      return;
+    }
+    el.classList.toggle("flip");
+  });
+  menuEl.append(el);
+});
+function syncLikes() {
+  document.querySelectorAll(".like-btn").forEach((b) => b.classList.toggle("on", likes.includes(+b.dataset.i)));
+}
+syncLikes();
+
+/* ---------- 맵기 ---------- */
+const SPICE = [
+  { face: "😇", label: "순둥이", desc: "맵찔이도 안심! 고소하고 부드럽게" },
+  { face: "😊", label: "보통맛", desc: "카레 본연의 향을 즐기기 딱 좋아요" },
+  { face: "😋", label: "매콤", desc: "살짝 땀이 나는 기분 좋은 매운맛" },
+  { face: "🥵", label: "화끈", desc: "라씨를 꼭 함께 주문하세요…" },
+  { face: "🔥", label: "지옥맛", desc: "도전자 등장! 사장님이 기억할 거예요" },
+];
+const spice = $("#spice");
+spice.value = store.get("spice", 1);
+function renderSpice() {
+  const s = SPICE[spice.value];
+  $("#spiceFace").textContent = s.face; $("#spiceLabel").textContent = s.label; $("#spiceDesc").textContent = s.desc;
+  $("#spiceFace").classList.toggle("shake", +spice.value >= 3);
+  store.set("spice", +spice.value);
+}
+spice.addEventListener("input", () => { renderSpice(); if (navigator.vibrate) navigator.vibrate(+spice.value * 8 + 5); });
+renderSpice();
+
+/* ---------- RSVP ---------- */
+const dayChips = $("#dayChips");
+[...CONFIG.days, "아직 모르겠어요"].forEach((d, i) => {
+  const lab = document.createElement("label");
+  lab.className = "chip";
+  lab.innerHTML = `<input type="radio" name="day" value="${d}" ${i === 0 ? "checked" : ""}/><span>${i < CONFIG.days.length ? fmtDay(d) : d}</span>`;
+  dayChips.append(lab);
+});
+let people = 1;
+const setPeople = (n) => { people = Math.max(1, Math.min(10, n)); $("#people").textContent = people; };
+$("#minus").onclick = () => setPeople(people - 1);
+$("#plus").onclick = () => setPeople(people + 1);
+
+function dayText(v) { return CONFIG.days.includes(v) ? fmtDay(v) : v; }
+function showTicket(r) {
+  $("#tName").textContent = r.name + " 님";
+  $("#tDay").textContent = dayText(r.day);
+  $("#tPeople").textContent = r.people + "명";
+  $("#tSpice").textContent = SPICE[r.spice].face + " " + SPICE[r.spice].label;
+  $("#tLikes").textContent = r.likes.length ? r.likes.map((i) => CONFIG.menu[i].name).join(", ") : "현장에서 고를게요";
+  $("#tNo").textContent = "No. " + r.no;
+  $("#rsvpForm").style.display = "none";
+  $("#ticket").classList.add("show");
+  $("#ticketActions").classList.add("show");
+}
+$("#rsvpForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const name = $("#rName").value.trim();
+  if (!name) { $("#rErr").textContent = "이름을 입력해 주세요 🙂"; $("#rName").focus(); return; }
+  $("#rErr").textContent = "";
+  const prev = store.get("rsvp", null);
+  const r = {
+    name, people, likes: [...likes], spice: +spice.value,
+    day: document.querySelector("input[name=day]:checked").value,
+    msg: $("#rMsg").value.trim(),
+    no: prev?.no || String(Math.floor(Math.random() * 900) + 100).padStart(3, "0"),
+  };
+  store.set("rsvp", r);
+  showTicket(r);
+  confetti(30);
+  toast("기다리고 있을게요!");
+});
+$("#editRsvp").addEventListener("click", () => {
+  const r = store.get("rsvp", null);
+  if (r) {
+    $("#rName").value = r.name; $("#rMsg").value = r.msg || ""; setPeople(r.people);
+    const radio = document.querySelector(`input[name=day][value="${CSS.escape(r.day)}"]`); if (radio) radio.checked = true;
+  }
+  $("#rsvpForm").style.display = "";
+  $("#ticket").classList.remove("show");
+  $("#ticketActions").classList.remove("show");
+});
+$("#sendHost").addEventListener("click", async () => {
+  const r = store.get("rsvp", null); if (!r) return;
+  // 티켓을 만든 뒤 바꾼 찜/맵기도 반영
+  r.likes = [...likes]; r.spice = +spice.value; store.set("rsvp", r); showTicket(r);
+  const text = `[${CONFIG.title} 참석]\n이름: ${r.name}\n방문일: ${dayText(r.day)}\n인원: ${r.people}명\n맵기: ${SPICE[r.spice].label}\n찜한 메뉴: ${r.likes.map((i) => CONFIG.menu[i].name).join(", ") || "-"}${r.msg ? "\n한마디: " + r.msg : ""}`;
+  if (CONFIG.hostContact) { location.href = `sms:${CONFIG.hostContact}?&body=${encodeURIComponent(text)}`; return; }
+  if (navigator.share) { try { await navigator.share({ text }); return; } catch (err) { if (err.name === "AbortError") return; } }
+  try { await navigator.clipboard.writeText(text); toast("참석 정보를 복사했어요. 호스트에게 붙여넣어 주세요"); }
+  catch { toast("복사에 실패했어요"); }
+});
+const saved = store.get("rsvp", null);
+if (saved) showTicket(saved);
+
+/* ---------- 응원 메모 ---------- */
+let notes = store.get("notes", []);
+function renderNotes() {
+  const box = $("#notes"); box.innerHTML = "";
+  notes.slice().reverse().forEach((n) => {
+    const d = document.createElement("div"); d.className = "note";
+    d.textContent = n.text;
+    const s = document.createElement("small"); s.textContent = n.at; d.append(s);
+    box.append(d);
+  });
+}
+$("#noteForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const v = $("#noteInput").value.trim(); if (!v) return;
+  const now = new Date();
+  notes.push({ text: v, at: `${now.getMonth() + 1}/${now.getDate()} ${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}` });
+  notes = notes.slice(-20); store.set("notes", notes);
+  $("#noteInput").value = ""; renderNotes(); toast("응원 고마워요 💛");
+});
+renderNotes();
+
+/* ---------- 공유 ---------- */
+$("#shareBtn").addEventListener("click", async () => {
+  const url = location.origin + location.pathname;
+  const data = { title: CONFIG.title, text: `${CONFIG.title}에 초대합니다 🍛 ${CONFIG.days.map(fmtDay).join(", ")}`, url };
+  if (navigator.share) { try { await navigator.share(data); return; } catch (err) { if (err.name === "AbortError") return; } }
+  try { await navigator.clipboard.writeText(url); toast("링크를 복사했어요"); } catch { toast(url); }
+});
+
+/* ---------- 컨페티 ---------- */
+function confetti(n) {
+  const set = ["🍛", "🌶️", "✨", "💛", "🥕", "🧅"];
+  for (let i = 0; i < n; i++) {
+    const c = document.createElement("span");
+    c.className = "confetti";
+    c.textContent = set[i % set.length];
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.animationDuration = 1.8 + Math.random() * 1.6 + "s";
+    c.style.animationDelay = Math.random() * 0.4 + "s";
+    c.style.fontSize = 14 + Math.random() * 16 + "px";
+    document.body.append(c);
+    setTimeout(() => c.remove(), 4000);
+  }
+}
+</script>
+</body>
+</html>
